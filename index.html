@@ -57,7 +57,6 @@
         }
         .lang-btn:hover { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); }
 
-        /* Nút Hamburger cho Mobile */
         .menu-toggle {
             display: none; font-size: 1.5rem; color: #fff; cursor: pointer; z-index: 1001; transition: var(--transition);
         }
@@ -183,17 +182,16 @@
         @media (max-width: 768px) {
             nav { padding: 15px 20px; }
             nav.scrolled { padding: 10px 20px; }
-            .menu-toggle { display: block; } /* Hiện nút Menu */
+            .menu-toggle { display: block; }
             
-            /* Chuyển Nav-links thành thanh trượt cho mobile */
             .nav-links {
                 position: absolute; top: 100%; left: 0; right: 0; background: rgba(7, 11, 9, 0.98);
                 flex-direction: column; padding: 20px 0; gap: 20px; border-bottom: 1px solid var(--glass-border);
-                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); /* Ẩn menu đi */
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); 
                 transition: clip-path 0.4s ease-in-out;
             }
             .nav-links.active {
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Hiện menu ra */
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
             
             .hero { padding: 15px; }
@@ -209,9 +207,28 @@
             .text-box h3 { font-size: 1.8rem; }
             .text-box p { font-size: 1rem; }
             
-            .team-member { width: calc(50% - 10px); }
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); }
-            .photo-item { height: 250px; }
+            /* SỬA LẠI: GALLERY LƯỚT NGANG TRÊN MOBILE */
+            .photo-grid { 
+                display: flex; flex-wrap: nowrap; overflow-x: auto; 
+                scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 20px; 
+                scrollbar-width: none; /* Ẩn thanh cuộn */
+            }
+            .photo-grid::-webkit-scrollbar { display: none; }
+            .photo-item { 
+                flex: 0 0 75%; /* Chiếm 75% chiều rộng màn hình */
+                scroll-snap-align: center; height: 320px; 
+                transform: scale(0.85); opacity: 0.5; transition: all 0.4s ease;
+            }
+            /* Kích hoạt khi ảnh nằm giữa màn hình */
+            .photo-item.active-snap { transform: scale(1); opacity: 1; }
+            .photo-item.active-snap .photo-overlay { bottom: 0; opacity: 1; }
+
+            /* SỬA LẠI: ĐỘI NGŨ THU GỌN - 3 người 1 hàng trên màn hình vừa */
+            .team-grid { gap: 15px; }
+            .team-member { width: calc(33.33% - 15px); min-width: unset; padding: 15px 10px; }
+            .team-avatar { width: 60px; height: 60px; font-size: 1.2rem; margin-bottom: 10px; }
+            .team-name { font-size: 0.9rem; }
+            .team-role { font-size: 0.7rem; }
             
             .project-panel { padding: 30px 20px; }
             .map-wrapper { height: 300px; }
@@ -219,9 +236,17 @@
         }
         
         @media (max-width: 480px) {
-            .team-member { width: 100%; }
             .hero h1 { font-size: 2.5rem; letter-spacing: 2px; }
             .qr-card { max-width: 200px; }
+            
+            /* Ảnh lướt trên đt nhỏ sẽ ngắn lại xíu */
+            .photo-item { height: 280px; flex: 0 0 85%; }
+
+            /* SỬA LẠI: ĐỘI NGŨ THU GỌN - 2 người 1 hàng trên đt nhỏ */
+            .team-member { width: calc(50% - 10px); padding: 15px 5px; }
+            .team-avatar { width: 50px; height: 50px; font-size: 1rem; }
+            .team-name { font-size: 0.85rem; }
+            .team-role { font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -485,7 +510,6 @@
 
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            // Đổi icon hamburger thành nút X khi mở menu
             const icon = menuToggle.querySelector('i');
             if(navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
@@ -496,7 +520,6 @@
             }
         });
 
-        // Đóng menu trên di động khi click vào một link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -514,6 +537,29 @@
         }, { threshold: 0.1 });
         revealElements.forEach(el => revealObserver.observe(el));
 
+        // SỬA LẠI: HIỆU ỨNG ZOOM ẢNH KHI LƯỚT NGANG TRÊN ĐIỆN THOẠI
+        const photoItems = document.querySelectorAll('.photo-item');
+        const photoGrid = document.querySelector('.photo-grid');
+
+        if (photoItems.length > 0 && photoGrid) {
+            const snapObserver = new IntersectionObserver((entries) => {
+                if (window.innerWidth <= 768) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active-snap');
+                        } else {
+                            entry.target.classList.remove('active-snap');
+                        }
+                    });
+                }
+            }, { 
+                root: photoGrid, // Bắt sự kiện cuộn chuẩn xác trong khung Gallery
+                threshold: 0.6 // Ảnh vào giữa khung 60% thì phóng to lên
+            });
+
+            photoItems.forEach(item => snapObserver.observe(item));
+        }
+
         // Nút Tiếng Anh / Tiếng Việt
         function toggleLanguage() {
             document.body.classList.toggle('english-active');
@@ -523,7 +569,6 @@
             } else {
                 btn.textContent = "VI / EN";
             }
-            // Đóng menu trên mobile nếu đang mở
             navLinks.classList.remove('active');
             menuToggle.querySelector('i').classList.remove('fa-xmark');
             menuToggle.querySelector('i').classList.add('fa-bars');
