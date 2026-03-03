@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dray Nur Waterfall | Khám Phá & Bảo Tồn - Nhóm 6 (11A2)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================= VARIABLES ================= */
+        :root {
+            --bg-dark: #070b09; 
+            --text-light: #fdfdfd;
+            --accent-cyan: #1abc9c; 
+            --accent-gold: #d4af37;
+            --glow-cyan: rgba(26, 188, 156, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: var(--text-light); overflow-x: hidden; line-height: 1.8; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; }
+        a { text-decoration: none; color: inherit; }
+
+        .lang-en { display: none; }
+        body.english-active .lang-vn { display: none; }
+        body.english-active .lang-en { display: inline-block; }
+        body.english-active blockquote.lang-en, body.english-active p.lang-en { display: block; }
+
+        /* ================= NAVBAR ================= */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; transition: var(--transition); border-bottom: 1px solid transparent;
+        }
+        nav.scrolled { 
+            background: rgba(7, 11, 9, 0.9); backdrop-filter: blur(15px); padding: 15px 50px; border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent-cyan); }
+        
+        .lang-btn {
+            background: transparent; border: 1px solid var(--glass-border); color: #fff; padding: 5px 15px;
+            border-radius: 20px; cursor: pointer; transition: var(--transition); font-weight: 600;
+        }
+        .lang-btn:hover { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); }
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(rgba(7, 11, 9, 0.7), rgba(7, 11, 9, 0.95)), url('01_oczn.jpg') center/cover fixed;
+            padding: 20px;
+        }
+
+        /* ĐÃ SỬA: Hiệu ứng màu chạy Vàng Gold & Xanh Ngọc */
+        .hero h1 { 
+            font-size: 6.5rem; letter-spacing: 8px; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; 
+            color: #fff; transition: all 0.3s ease; animation: fadeUp 1s ease;
+            position: relative;
+        }
+        .hero h1:hover {
+            background: linear-gradient(90deg, #d4af37, #f1c40f, #1abc9c, #0e6655, #d4af37);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlowRun 3s linear infinite;
+            cursor: default;
+        }
+        @keyframes textGlowRun {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .hero p.subtitle { font-size: 1.3rem; color: #b8c5bf; font-style: italic; margin-bottom: 50px; animation: fadeUp 1.5s ease; }
+        
+        .btn-cyan {
+            background-color: var(--accent-cyan); color: #000; padding: 15px 40px; border-radius: 30px;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px;
+            box-shadow: 0 0 25px var(--glow-cyan); transition: var(--transition); animation: fadeUp 2s ease;
+        }
+        .btn-cyan:hover { box-shadow: 0 0 45px var(--glow-cyan); transform: translateY(-5px); background-color: #1dd2af; }
+
+        /* ================= GLOBAL STYLES ================= */
+        section { padding: 100px 10%; position: relative; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 3rem; color: #fff; }
+        .section-title p { color: var(--accent-cyan); letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; font-weight: 600;}
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ================= THE LEGEND ================= */
+        .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .text-box h3 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        .text-box p { font-size: 1.05rem; color: #a5b3ac; margin-bottom: 15px; text-align: justify; }
+        .img-box img { width: 100%; border-radius: 15px; filter: brightness(0.85); transition: var(--transition); box-shadow: 0 15px 30px rgba(0,0,0,0.5);}
+        .img-box img:hover { filter: brightness(1); transform: scale(1.02); }
+
+        /* ================= TEAM SECTION ================= */
+        .team-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+        .team-member {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 30px 20px; text-align: center; width: 220px; transition: var(--transition); backdrop-filter: blur(10px);
+        }
+        .team-member:hover { 
+            transform: translateY(-10px); border-color: var(--accent-cyan); 
+            box-shadow: 0 15px 30px rgba(26, 188, 156, 0.15); background: rgba(255,255,255,0.08);
+        }
+        .team-avatar {
+            width: 90px; height: 90px; border-radius: 50%; background: #222; margin: 0 auto 15px;
+            border: 2px solid var(--accent-cyan); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #555;
+        }
+        .team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .team-name { font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 5px; }
+        .team-role { font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+
+        /* ================= GALLERY ================= */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .photo-item { position: relative; height: 350px; border-radius: 15px; overflow: hidden; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.4);}
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; filter: brightness(0.7); }
+        .photo-item:hover img { transform: scale(1.1); filter: brightness(1); }
+        .photo-overlay {
+            position: absolute; bottom: -50px; left: 0; width: 100%; padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9)); transition: 0.4s ease; opacity: 0;
+        }
+        .photo-item:hover .photo-overlay { bottom: 0; opacity: 1; }
+        .photo-overlay h4 { font-size: 1.2rem; color: var(--accent-cyan); margin-bottom: 5px; }
+        .photo-overlay p { font-size: 0.85rem; color: #ddd; }
+
+        /* ================= VIDEO & MAP ================= */
+        .video-section { background: rgba(0,0,0,0.4); padding: 80px 10%; text-align: center; border-top: 1px solid var(--glass-border);}
+        .iframe-wrapper { position: relative; padding-bottom: 56.25%; height: 0; max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
+        .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        
+        .map-section { background: rgba(255,255,255,0.01); }
+        .map-wrapper { border-radius: 20px; overflow: hidden; height: 400px; border: 1px solid var(--glass-border); }
+        .map-wrapper iframe { width: 100%; height: 100%; filter: invert(90%) hue-rotate(180deg); }
+        .loc-info { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px);}
+        .loc-info i { color: var(--accent-cyan); margin-right: 15px; width: 20px; }
+        .loc-info p { margin-bottom: 20px; font-size: 1.05rem; color: #a5b3ac;}
+
+        /* ================= PROJECT SECTION ================= */
+        .project-section { background: linear-gradient(rgba(7, 11, 9, 0.8), rgba(7, 11, 9, 0.95)), url('161668-1.jpg') center/cover fixed; } 
+        .project-panel { background: rgba(10, 15, 12, 0.85); backdrop-filter: blur(20px); padding: 60px; border-radius: 30px; border: 1px solid var(--glass-border); display: flex; gap: 50px; align-items: center; flex-wrap: wrap; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
+        .proj-text { flex: 2; min-width: 300px; }
+        .green-guide { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .guide-item { background: var(--glass-bg); padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border); font-size: 0.85rem; font-weight: 600;}
+        
+        .proj-media { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .qr-card { background: #fff; padding: 20px; border-radius: 20px; text-align: center; color: #000; width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.3s;}
+        .qr-card:hover { transform: scale(1.05); }
+        .qr-card img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+
+        /* ================= FOOTER ================= */
+        footer { background: #030805; padding: 50px 10% 20px; text-align: center; border-top: 1px solid var(--glass-border); }
+        .footer-logo { font-size: 2rem; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
+        .socials { margin: 20px 0; }
+        .socials a { display: inline-flex; width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); color: #fff; align-items: center; justify-content: center; margin: 0 10px; transition: var(--transition); border: 1px solid var(--glass-border);}
+        .socials a:hover { background: var(--accent-cyan); color: #000; transform: translateY(-5px); border-color: var(--accent-cyan);}
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .hero h1 { font-size: 3.5rem; } .nav-links { display: none; } .split-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">DRAY NUR</div>
+        <div class="nav-links">
+            <a href="#legend"><span class="lang-vn">Huyền Thoại</span><span class="lang-en">Legend</span></a>
+            <a href="#gallery"><span class="lang-vn">Hình Ảnh</span><span class="lang-en">Gallery</span></a>
+            <a href="#video-tour"><span class="lang-vn">Thước Phim</span><span class="lang-en">Video</span></a>
+            <a href="#team"><span class="lang-vn">Thành Viên</span><span class="lang-en">Team</span></a>
+            <a href="#project"><span class="lang-vn">Dự Án</span><span class="lang-en">Project</span></a>
+        </div>
+        <button class="lang-btn" onclick="toggleLanguage()">VI / EN</button>
+    </nav>
+
+    <header class="hero">
+        <h1 class="lang-vn">THÁC DRAY NUR</h1>
+        <h1 class="lang-en">DRAY NUR FALLS</h1>
+        
+        <p class="subtitle">
+            <span class="lang-vn">Nơi huyền thoại gầm thét, nơi di sản thở than.</span>
+            <span class="lang-en">Where legends roar, where heritage breathes.</span>
+        </p>
+        
+        <a href="#legend" class="btn-cyan">
+            <span class="lang-vn">KHÁM PHÁ NGAY</span>
+            <span class="lang-en">DISCOVER NOW</span>
+        </a>
+    </header>
+
+    <section id="legend">
+        <div class="section-title reveal">
+            <h2><span class="lang-vn">Câu Chuyện Từ Dòng Sêrêpôk</span><span class="lang-en">Story from the Serepok</span></h2>
+            <p><span class="lang-vn">Huyền thoại hóa đá</span><span class="lang-en">The Legend of Stone</span></p>
+        </div>
+        <div class="split-grid reveal">
+            <div class="img-box">
+                <img src="01_oczn.jpg" alt="Dray Nur Waterfall">
+            </div>
+            <div class="text-box">
+                <h3><span class="lang-vn">Nơi Thiên Nhiên Và Truyền Thuyết Hòa Quyện</span><span class="lang-en">Where Nature and Legend Intertwine</span></h3>
+                <p class="lang-vn">Ở vùng Tây Nguyên Việt Nam, nơi rừng già mọc dày đặc và những con sông khoét sâu vào lớp đá cổ xưa, có một ngọn thác mà câu chuyện của nó được kể từ rất lâu trước khi vẻ đẹp của nó được chiêm ngưỡng. Đó là Dray Nur, nằm dọc theo dòng sông Sêrêpôk hùng mạnh.</p>
+                <p class="lang-en">In the Central Highlands of Vietnam, where ancient forests grow dense and rivers carve deep into ancient stone, lies a waterfall whose story was told long before its beauty was seen. That is Dray Nur, located along the mighty Serepok River.</p>
+                
+                <p class="lang-vn">Truyền thuyết kể về một chàng trai và một cô gái thuộc hai ngôi làng đối địch nhưng đem lòng yêu nhau say đắm. Bị cấm cản, họ chọn dòng sông làm nơi gặp gỡ. Nhưng trong một đêm mưa bão, bi kịch đã xảy ra. Hai người yêu bị dòng nước dữ chia cắt mãi mãi.</p>
+                <p class="lang-en">Legend tells of a boy and a girl from two rival villages who fell deeply in love. Forbidden to be together, they chose the river as their meeting place. But on a stormy night, tragedy struck, and the raging waters separated them forever.</p>
+
+                <p class="lang-vn">Quá đau khổ, người con gái khóc mãi không ngừng, chính nỗi đau ấy đã chia dòng sông làm đôi. Trong ngôn ngữ địa phương, “Dray” có nghĩa là thác, còn “Nur” là nữ giới. Từ trái tim tan vỡ ấy, "Thác Của Người Vợ" ra đời — oai hùng, kiên cường và mang tính biểu tượng vĩnh cửu.</p>
+                <p class="lang-en">Overcome with grief, the girl's endless tears split the river in two. In the local language, "Dray" means waterfall, and "Nur" means female. From that broken heart, the "Waterfall of the Wife" was born—majestic, resilient, and eternally symbolic.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" style="background: rgba(255,255,255,0.01);">
+        <div class="section-title reveal">
+            <h2><span class="lang-vn">Dấu Ấn Lữ Khách</span><span class="lang-en">Traveler's Impressions</span></h2>
+            <p><span class="lang-vn">Vẻ đẹp qua từng khung hình</span><span class="lang-en">Beauty through the lens</span></p>
+        </div>
+        
+        <div class="photo-grid reveal">
+            <div class="photo-item">
+                <img src="580483481_1488717859925865_5772949176396093292_n.jpg" alt="Thư giãn">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Tận Hưởng Sự Bình Yên</h4><h4 class="lang-en">Enjoy The Peace</h4>
+                    <p class="lang-vn">Hít thở bầu không khí trong lành của đại ngàn.</p>
+                    <p class="lang-en">Breathe in the fresh air of the great forest.</p>
+                </div>
+            </div>
+            <div class="photo-item">
+                <img src="580984176_1488718003259184_3989943782062929719_n.jpg" alt="Cầu Treo">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Cầu Treo Vắt Vẻo</h4><h4 class="lang-en">Suspension Bridge</h4>
+                    <p class="lang-vn">Trải nghiệm băng qua những tán rừng cổ thụ.</p>
+                    <p class="lang-en">Experience crossing the ancient forest canopy.</p>
+                </div>
+            </div>
+            <div class="photo-item">
+                <img src="poster thác dray nur.jpg" alt="Thuyền Hoa">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Sắc Màu Mùa Xuân</h4><h4 class="lang-en">Spring Colors</h4>
+                    <p class="lang-vn">Những con thuyền hoa rực rỡ bên bờ đá bazan.</p>
+                    <p class="lang-en">Vibrant flower boats by the basalt rocks.</p>
+                </div>
+            </div>
+            <div class="photo-item">
+                <img src="thac-dray-nur-01-1695793450.jpg" alt="Toàn Cảnh">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Bức Màn Nước Khổng Lồ</h4><h4 class="lang-en">The Giant Water Curtain</h4>
+                    <p class="lang-vn">Mặt thác trải rộng 250m cực kỳ hoành tráng.</p>
+                    <p class="lang-en">The waterfall surface stretches 250m majestically.</p>
+                </div>
+            </div>
+            <div class="photo-item">
+                <img src="161668-1.jpg" alt="Khám Phá">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Chinh Phục Thiên Nhiên</h4><h4 class="lang-en">Conquer Nature</h4>
+                    <p class="lang-vn">Du khách trải nghiệm lội suối ngay dưới chân thác.</p>
+                    <p class="lang-en">Tourists wading right at the foot of the falls.</p>
+                </div>
+            </div>
+            <div class="photo-item">
+                <img src="619835491_1191935496484027_4445451976617143264_n.jpg" alt="Flycam">
+                <div class="photo-overlay">
+                    <h4 class="lang-vn">Hòa Mình Vào Đại Ngàn</h4><h4 class="lang-en">Into The Great Forest</h4>
+                    <p class="lang-vn">Góc nhìn tuyệt mỹ từ không trung.</p>
+                    <p class="lang-en">A stunning view from above.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video-tour" class="video-section">
+        <div class="section-title reveal">
+            <h2><span class="lang-vn">Lắng Nghe Tiếng Vọng</span><span class="lang-en">Hear The Echo</span></h2>
+            <p><span class="lang-vn">Thước phim từ dự án 11A2</span><span class="lang-en">Footage by 11A2 Project</span></p>
+        </div>
+        <div class="iframe-wrapper reveal">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0" title="Dray Nur Video Tour" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section id="team" style="background: rgba(255,255,255,0.02);">
+        <div class="section-title reveal">
+            <h2><span class="lang-vn">Đội Ngũ Dự Án</span><span class="lang-en">Our Team</span></h2>
+            <p><span class="lang-vn">Những người kiến tạo chiến dịch - Nhóm 6</span><span class="lang-en">The creators - Group 6</span></p>
+        </div>
+        <div class="team-grid reveal">
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Nguyễn Văn Hiển</div>
+                <div class="team-role"><span class="lang-vn">Trưởng Nhóm</span><span class="lang-en">Leader</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Nguyễn Thuận</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Trần Quang Minh</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Hồ Thị Thùy Dung</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Nguyễn Hoàng Gia Huy</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Nguyễn Phan Thành Vỹ</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="team-name">Nguyễn Tiến Đạt</div>
+                <div class="team-role"><span class="lang-vn">Thành Viên</span><span class="lang-en">Member</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="map" class="map-section">
+        <div class="split-grid reveal">
+            <div class="loc-info">
+                <h3 style="font-size: 2.2rem; color: #fff; margin-bottom: 20px;">
+                    <span class="lang-vn">Đường Đến Huyền Thoại</span><span class="lang-en">Road To The Legend</span>
+                </h3>
+                <p><i class="fa-solid fa-location-dot"></i> <span class="lang-vn">Thác Dray Nur, Xã Dray Sáp, Krông Ana, Đắk Lắk.</span><span class="lang-en">Dray Nur Waterfall, Dray Sap, Krong Ana, Dak Lak.</span></p>
+                <p><i class="fa-solid fa-motorcycle"></i> <span class="lang-vn">Cách trung tâm TP. Buôn Ma Thuột chưa đầy 30km.</span><span class="lang-en">Less than 30km from Buon Ma Thuot city center.</span></p>
+                <p class="lang-vn" style="margin-top: 20px;">Dray Nur không chỉ còn là một nơi linh thiêng. Nó trở thành điểm giao thoa giữa văn hóa, thiên nhiên và nhịp sống hiện đại. Hãy đến chiêm ngưỡng vẻ đẹp và rời đi với câu chuyện đọng lại trong lòng.</p>
+                <p class="lang-en" style="margin-top: 20px;">Dray Nur is no longer just a sacred place. It has become an intersection of culture, nature, and modern life. Come admire its beauty and leave with a story echoing in your heart.</p>
+            </div>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3894.613303862283!2d107.88602227602055!3d12.541819524141753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3171f11e4bf3cb51%3A0xe67dbdbef5050fbd!2zVGjDoWMgRHJheSBOdXI!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="project" class="project-section">
+        <div class="project-panel reveal">
+            <div class="proj-text">
+                <h3 style="font-size: 2.5rem; color: #fff; margin-bottom: 15px;">
+                    <span class="lang-vn">Chiến Dịch Bảo Tồn</span>
+                    <span class="lang-en">Conservation Action</span>
+                </h3>
+                <h4 style="color: var(--accent-cyan); font-weight: 600; text-transform: uppercase; margin-bottom: 25px;">
+                    <span class="lang-vn">Dự án môn Tiếng Anh - Lớp 11A2 THPT Hùng Vương</span>
+                    <span class="lang-en">English Project - Class 11A2 Hung Vuong High</span>
+                </h4>
+                
+                <p class="lang-vn">Khi du lịch phát triển, Dray Nur đang đứng trước một ngã rẽ. Với chúng mình, bảo tồn thác nước không chỉ là giữ gìn nước và đá — mà còn là gìn giữ ký ức, văn hóa và ý nghĩa. Nếu chỉ xem nơi đây như điểm tham quan, ta sẽ đánh mất điều cốt lõi.</p>
+                <p class="lang-en">As tourism develops, Dray Nur stands at a crossroads. For us, preserving the waterfall is not just about keeping water and rock — it's about preserving memories, culture, and meaning. If we only see it as a tourist attraction, we lose its core.</p>
+                
+                <p class="lang-vn" style="margin-top: 15px; color: #fff; font-weight: 600;">Tôn trọng nó như một câu chuyện sống. Hãy chung tay cùng Nhóm 6!</p>
+                <p class="lang-en" style="margin-top: 15px; color: #fff; font-weight: 600;">Respect it as a living story. Join hands with Group 6!</p>
+
+                <div class="green-guide">
+                    <div class="guide-item">
+                        <i class="fa-solid fa-shoe-prints" style="color: var(--accent-cyan);"></i> 
+                        <span class="lang-vn">Không xả rác</span><span class="lang-en">No littering</span>
+                    </div>
+                    <div class="guide-item">
+                        <i class="fa-solid fa-camera-retro" style="color: #d4af37;"></i> 
+                        <span class="lang-vn">Giữ cảnh quan</span><span class="lang-en">Keep it green</span>
+                    </div>
+                    <div class="guide-item">
+                        <i class="fa-solid fa-heart" style="color: #e74c3c;"></i> 
+                        <span class="lang-vn">Tôn trọng văn hóa</span><span class="lang-en">Respect culture</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="proj-media">
+                <div class="qr-card">
+                    <img src="image_31c443.jpg" alt="Tờ rơi quảng bá">
+                    <p style="font-weight: 600; font-size: 0.9rem;">
+                        <span class="lang-vn">Quét hoặc nhận tờ rơi từ chúng mình!</span>
+                        <span class="lang-en">Scan or get a flyer from us!</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">DRAY NUR</div>
+        <p>
+            <span class="lang-vn">Dự án truyền thông & bảo tồn di sản địa phương.</span>
+            <span class="lang-en">Local heritage media & conservation project.</span>
+        </p>
+        <p style="color: #fff; font-weight: 600; margin-top: 5px;">
+            <span class="lang-vn">Thực hiện: Nhóm 1 - Lớp 11A2 - THPT Hùng Vương</span>
+            <span class="lang-en">Created by: Group 1 - Class 11A2 - Hung Vuong High School</span>
+        </p>
+        <div class="socials">
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+        <p style="font-size: 0.8rem; letter-spacing: 2px; color: var(--accent-cyan);">#SAVEDRAYNUR #GROUP1_11A2</p>
+    </footer>
+
+    <script>
+        // Đổi màu Navbar khi lướt
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 80) { nav.classList.add('scrolled'); } 
+            else { nav.classList.remove('scrolled'); }
+        });
+
+        // Hiệu ứng Fade up
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Nút Tiếng Anh / Tiếng Việt
+        function toggleLanguage() {
+            document.body.classList.toggle('english-active');
+            const btn = document.querySelector('.lang-btn');
+            if (document.body.classList.contains('english-active')) {
+                btn.textContent = "EN / VI";
+            } else {
+                btn.textContent = "VI / EN";
+            }
+        }
+    </script>
+</body>
+</html>
