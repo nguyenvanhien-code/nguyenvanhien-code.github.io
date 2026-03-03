@@ -7,7 +7,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="https://www.facebook.com/photo/?fbid=1089168882664642&set=a.103416294573244">
+    <link rel="icon" href="1.jpg">
 
     <style>
         /* ================= VARIABLES ================= */
@@ -45,7 +45,10 @@
         nav.scrolled { 
             background: rgba(7, 11, 9, 0.95); backdrop-filter: blur(15px); padding: 15px 50px; border-bottom: 1px solid var(--glass-border);
         }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: 2px; z-index: 1001; }
+        
+        .logo-container { display: flex; align-items: center; gap: 15px; z-index: 1001; }
+        .logo-img { height: 40px; width: auto; border-radius: 5px; }
+        .logo-text { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: 2px; }
         
         .nav-links { display: flex; gap: 30px; align-items: center; }
         .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; transition: var(--transition); }
@@ -57,15 +60,14 @@
         }
         .lang-btn:hover { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); }
 
-        .menu-toggle {
-            display: none; font-size: 1.5rem; color: #fff; cursor: pointer; z-index: 1001; transition: var(--transition);
-        }
+        .menu-toggle { display: none; font-size: 1.5rem; color: #fff; cursor: pointer; z-index: 1001; transition: var(--transition); }
 
-        /* ================= HERO SECTION ================= */
+        /* ================= HERO SECTION (Đã sửa lỗi mất nền) ================= */
         .hero {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            background: linear-gradient(rgba(7, 11, 9, 0.7), rgba(7, 11, 9, 0.95)), url('01_oczn.jpg') center/cover fixed;
-            padding: 20px;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
+            /* Đã thay đổi tên ảnh nền thành 1.jpg để đồng bộ */
+            background: linear-gradient(rgba(7, 11, 9, 0.7), rgba(7, 11, 9, 0.95)), url('1.jpg') center/cover no-repeat;
+            background-attachment: fixed; /* Parallax trên máy tính */
         }
 
         .hero h1 { 
@@ -74,15 +76,10 @@
         }
         .hero h1:hover {
             background: linear-gradient(90deg, #d4af37, #f1c40f, #1abc9c, #0e6655, #d4af37);
-            background-size: 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-size: 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: textGlowRun 3s linear infinite; cursor: default;
         }
-        @keyframes textGlowRun {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        @keyframes textGlowRun { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
         .hero p.subtitle { font-size: 1.3rem; color: #b8c5bf; font-style: italic; margin-bottom: 50px; animation: fadeUp 1.5s ease; }
         
@@ -101,12 +98,23 @@
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* ================= THE LEGEND ================= */
-        .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        /* ================= THE LEGEND + VIDEO ================= */
+        .split-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center; margin-bottom: 60px;}
         .text-box h3 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
         .text-box p { font-size: 1.05rem; color: #a5b3ac; margin-bottom: 15px; text-align: justify; }
         .img-box img { width: 100%; border-radius: 15px; filter: brightness(0.85); transition: var(--transition); box-shadow: 0 15px 30px rgba(0,0,0,0.5);}
         .img-box img:hover { filter: brightness(1); transform: scale(1.02); }
+
+        /* Khung Video gộp chung */
+        .video-container { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .video-container h3 { font-size: 2rem; color: #fff; margin-bottom: 25px; }
+        .video-container h3 span { color: var(--accent-cyan); }
+        .video-box { 
+            position: relative; width: 100%; padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+            border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.7); 
+            border: 1px solid var(--glass-border);
+        }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         /* ================= GALLERY ================= */
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
@@ -120,18 +128,6 @@
         .photo-item:hover .photo-overlay { bottom: 0; opacity: 1; }
         .photo-overlay h4 { font-size: 1.2rem; color: var(--accent-cyan); margin-bottom: 5px; }
         .photo-overlay p { font-size: 0.85rem; color: #ddd; }
-
-        /* ================= VIDEO & MAP ================= */
-        .video-section { background: rgba(0,0,0,0.4); padding: 80px 10%; text-align: center; border-top: 1px solid var(--glass-border);}
-        .iframe-wrapper { position: relative; padding-bottom: 56.25%; height: 0; max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
-        .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        
-        .map-section { background: rgba(255,255,255,0.01); }
-        .map-wrapper { border-radius: 20px; overflow: hidden; height: 400px; border: 1px solid var(--glass-border); }
-        .map-wrapper iframe { width: 100%; height: 100%; filter: invert(90%) hue-rotate(180deg); }
-        .loc-info { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px);}
-        .loc-info i { color: var(--accent-cyan); margin-right: 15px; width: 20px; }
-        .loc-info p { margin-bottom: 20px; font-size: 1.05rem; color: #a5b3ac;}
 
         /* ================= TEAM ================= */
         .team-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
@@ -150,6 +146,14 @@
         .team-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .team-name { font-weight: 700; font-size: 1.05rem; color: #fff; margin-bottom: 5px; }
         .team-role { font-size: 0.75rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+
+        /* ================= MAP ================= */
+        .map-section { background: rgba(255,255,255,0.01); }
+        .map-wrapper { border-radius: 20px; overflow: hidden; height: 400px; border: 1px solid var(--glass-border); }
+        .map-wrapper iframe { width: 100%; height: 100%; filter: invert(90%) hue-rotate(180deg); }
+        .loc-info { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px);}
+        .loc-info i { color: var(--accent-cyan); margin-right: 15px; width: 20px; }
+        .loc-info p { margin-bottom: 20px; font-size: 1.05rem; color: #a5b3ac;}
 
         /* ================= PROJECT SECTION ================= */
         .project-section { background: linear-gradient(rgba(7, 11, 9, 0.8), rgba(7, 11, 9, 0.95)), url('6.jpg') center/cover fixed; } 
@@ -170,11 +174,11 @@
         .socials a { display: inline-flex; width: 40px; height: 40px; border-radius: 50%; background: var(--glass-bg); color: #fff; align-items: center; justify-content: center; margin: 0 10px; transition: var(--transition); border: 1px solid var(--glass-border);}
         .socials a:hover { background: var(--accent-cyan); color: #000; transform: translateY(-5px); border-color: var(--accent-cyan);}
 
-        /* ================= MOBILE RESPONSIVE ================= */
+        /* ================= MOBILE RESPONSIVE TỐI ƯU ================= */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
         @media (max-width: 1024px) {
-            .split-grid { gap: 40px; }
+            .split-grid { gap: 40px; grid-template-columns: 1fr; }
             .team-member { width: calc(33.33% - 20px); }
             section { padding: 80px 8%; }
         }
@@ -182,48 +186,58 @@
         @media (max-width: 768px) {
             nav { padding: 15px 20px; }
             nav.scrolled { padding: 10px 20px; }
-            .menu-toggle { display: block; }
+            .menu-toggle { display: block; } 
             
+            /* Sửa lỗi mất hình nền trên Safari/iOS: Tắt Fixed */
+            .hero { background-attachment: scroll; }
+
             .nav-links {
                 position: absolute; top: 100%; left: 0; right: 0; background: rgba(7, 11, 9, 0.98);
                 flex-direction: column; padding: 20px 0; gap: 20px; border-bottom: 1px solid var(--glass-border);
-                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); 
-                transition: clip-path 0.4s ease-in-out;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.4s ease-in-out;
             }
-            .nav-links.active {
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            }
+            .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
             
             .hero { padding: 15px; }
             .hero h1 { font-size: 3.2rem; letter-spacing: 4px; line-height: 1.2; }
-            .hero p.subtitle { font-size: 1.1rem; margin-bottom: 30px; }
-            .btn-cyan { padding: 12px 30px; font-size: 0.8rem; }
             
             section { padding: 60px 5%; }
             .section-title { margin-bottom: 40px; }
             .section-title h2 { font-size: 2.2rem; }
             
-            .split-grid { grid-template-columns: 1fr; gap: 30px; }
+            .split-grid { gap: 30px; margin-bottom: 40px; }
             .text-box h3 { font-size: 1.8rem; }
-            .text-box p { font-size: 1rem; }
             
-            /* SỬA LẠI: GALLERY LƯỚT NGANG TRÊN MOBILE */
+            /* CHIẾU VIDEO TRÀN VIỀN (FULL-BLEED) ĐỂ TO HẾT CỠ TRÊN MOBILE */
+            .video-container h3 { font-size: 1.5rem; margin-bottom: 15px;}
+            .video-full-mobile {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                right: 50%;
+                margin-left: -50vw;
+                margin-right: -50vw;
+                border-radius: 0;
+                box-shadow: none;
+                border-left: none;
+                border-right: none;
+            }
+
+            /* GALLERY LƯỚT NGANG */
             .photo-grid { 
                 display: flex; flex-wrap: nowrap; overflow-x: auto; 
                 scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 20px; 
-                scrollbar-width: none; /* Ẩn thanh cuộn */
+                scrollbar-width: none; 
             }
             .photo-grid::-webkit-scrollbar { display: none; }
             .photo-item { 
-                flex: 0 0 75%; /* Chiếm 75% chiều rộng màn hình */
-                scroll-snap-align: center; height: 320px; 
-                transform: scale(0.85); opacity: 0.5; transition: all 0.4s ease;
+                flex: 0 0 85%; scroll-snap-align: center; height: 320px; 
+                transform: scale(0.9); opacity: 0.6; transition: all 0.4s ease;
             }
-            /* Kích hoạt khi ảnh nằm giữa màn hình */
             .photo-item.active-snap { transform: scale(1); opacity: 1; }
             .photo-item.active-snap .photo-overlay { bottom: 0; opacity: 1; }
 
-            /* SỬA LẠI: ĐỘI NGŨ THU GỌN - 3 người 1 hàng trên màn hình vừa */
+            /* ĐỘI NGŨ THU GỌN - 3 người/hàng */
             .team-grid { gap: 15px; }
             .team-member { width: calc(33.33% - 15px); min-width: unset; padding: 15px 10px; }
             .team-avatar { width: 60px; height: 60px; font-size: 1.2rem; margin-bottom: 10px; }
@@ -232,33 +246,33 @@
             
             .project-panel { padding: 30px 20px; }
             .map-wrapper { height: 300px; }
-            .green-guide { justify-content: center; }
         }
         
         @media (max-width: 480px) {
-            .hero h1 { font-size: 2.5rem; letter-spacing: 2px; }
-            .qr-card { max-width: 200px; }
-            
-            /* Ảnh lướt trên đt nhỏ sẽ ngắn lại xíu */
-            .photo-item { height: 280px; flex: 0 0 85%; }
-
-            /* SỬA LẠI: ĐỘI NGŨ THU GỌN - 2 người 1 hàng trên đt nhỏ */
+            /* ĐỘI NGŨ THU GỌN - 2 người/hàng cho điện thoại nhỏ */
             .team-member { width: calc(50% - 10px); padding: 15px 5px; }
             .team-avatar { width: 50px; height: 50px; font-size: 1rem; }
             .team-name { font-size: 0.85rem; }
             .team-role { font-size: 0.65rem; }
+
+            .hero h1 { font-size: 2.5rem; letter-spacing: 2px; }
+            .qr-card { max-width: 200px; }
+            .photo-item { height: 280px; } 
         }
     </style>
 </head>
 <body>
 
     <nav id="navbar">
-        <div class="logo">DRAY NUR</div>
+        <div class="logo-container">
+            <img src="logo_nhom_1.png" alt="Logo Nhóm 1" class="logo-img" onerror="this.style.display='none'">
+            <div class="logo-text">DRAY NUR</div>
+        </div>
+        
         <div class="menu-toggle" id="mobile-menu"><i class="fa-solid fa-bars"></i></div>
         <div class="nav-links" id="nav-links">
-            <a href="#legend"><span class="lang-vn">Huyền Thoại</span><span class="lang-en">Legend</span></a>
+            <a href="#legend"><span class="lang-vn">Hành Trình</span><span class="lang-en">Journey</span></a>
             <a href="#gallery"><span class="lang-vn">Hình Ảnh</span><span class="lang-en">Gallery</span></a>
-            <a href="#video-tour"><span class="lang-vn">Thước Phim</span><span class="lang-en">Video</span></a>
             <a href="#team"><span class="lang-vn">Đội Ngũ</span><span class="lang-en">Team</span></a>
             <a href="#project"><span class="lang-vn">Dự Án</span><span class="lang-en">Project</span></a>
             <button class="lang-btn" onclick="toggleLanguage()">VI / EN</button>
@@ -282,9 +296,10 @@
 
     <section id="legend">
         <div class="section-title reveal">
-            <h2><span class="lang-vn">Câu Chuyện Từ Dòng Sêrêpôk</span><span class="lang-en">Story from the Serepok</span></h2>
-            <p><span class="lang-vn">Huyền thoại hóa đá</span><span class="lang-en">The Legend of Stone</span></p>
+            <h2><span class="lang-vn">Câu Chuyện & Thước Phim</span><span class="lang-en">The Story & Footage</span></h2>
+            <p><span class="lang-vn">Dòng Sêrêpôk kể chuyện</span><span class="lang-en">Tales of the Serepok River</span></p>
         </div>
+        
         <div class="split-grid reveal">
             <div class="img-box">
                 <img src="1.jpg" alt="Dray Nur Waterfall">
@@ -294,11 +309,15 @@
                 <p class="lang-vn">Ở vùng Tây Nguyên Việt Nam, nơi rừng già mọc dày đặc và những con sông khoét sâu vào lớp đá cổ xưa, có một ngọn thác mà câu chuyện của nó được kể từ rất lâu trước khi vẻ đẹp của nó được chiêm ngưỡng. Đó là Dray Nur, nằm dọc theo dòng sông Sêrêpôk hùng mạnh.</p>
                 <p class="lang-en">In the Central Highlands of Vietnam, where ancient forests grow dense and rivers carve deep into ancient stone, lies a waterfall whose story was told long before its beauty was seen. That is Dray Nur, located along the mighty Serepok River.</p>
                 
-                <p class="lang-vn">Truyền thuyết kể về một chàng trai và một cô gái thuộc hai ngôi làng đối địch nhưng đem lòng yêu nhau say đắm. Bị cấm cản, họ chọn dòng sông làm nơi gặp gỡ. Nhưng trong một đêm mưa bão, bi kịch đã xảy ra. Hai người yêu bị dòng nước dữ chia cắt mãi mãi.</p>
-                <p class="lang-en">Legend tells of a boy and a girl from two rival villages who fell deeply in love. Forbidden to be together, they chose the river as their meeting place. But on a stormy night, tragedy struck, and the raging waters separated them forever.</p>
+                <p class="lang-vn">Truyền thuyết kể về một chàng trai và một cô gái thuộc hai ngôi làng đối địch nhưng đem lòng yêu nhau say đắm. Bị cấm cản, bi kịch đã xảy ra trong một đêm mưa bão. Nỗi đau của người con gái khóc mãi không ngừng đã chia dòng sông làm đôi.</p>
+                <p class="lang-en">Legend tells of a boy and a girl from rival villages who fell in love. Due to forbidden love, a tragedy struck on a stormy night. The endless tears of the grieving girl split the river in two.</p>
+            </div>
+        </div>
 
-                <p class="lang-vn">Quá đau khổ, người con gái khóc mãi không ngừng, chính nỗi đau ấy đã chia dòng sông làm đôi. Trong ngôn ngữ địa phương, “Dray” có nghĩa là thác, còn “Nur” là nữ giới. Từ trái tim tan vỡ ấy, "Thác Của Người Vợ" ra đời — oai hùng, kiên cường và mang tính biểu tượng vĩnh cửu.</p>
-                <p class="lang-en">Overcome with grief, the girl's endless tears split the river in two. In the local language, "Dray" means waterfall, and "Nur" means female. From that broken heart, the "Waterfall of the Wife" was born—majestic, resilient, and eternally symbolic.</p>
+        <div class="video-container reveal" id="video-tour">
+            <h3><span class="lang-vn">Lắng Nghe <span>Tiếng Vọng Đại Ngàn</span></span><span class="lang-en">Hear The <span>Echo Of The Forest</span></span></h3>
+            <div class="video-box video-full-mobile">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0" title="Dray Nur Video Tour" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </section>
@@ -309,7 +328,7 @@
             <p><span class="lang-vn">Vẻ đẹp qua từng khung hình</span><span class="lang-en">Beauty through the lens</span></p>
         </div>
         
-        <div class="photo-grid reveal">
+        <div class="photo-grid reveal" id="mobile-carousel">
             <div class="photo-item">
                 <img src="2.jpg" alt="Thư giãn">
                 <div class="photo-overlay">
@@ -361,16 +380,6 @@
         </div>
     </section>
 
-    <section id="video-tour" class="video-section">
-        <div class="section-title reveal">
-            <h2><span class="lang-vn">Lắng Nghe Tiếng Vọng</span><span class="lang-en">Hear The Echo</span></h2>
-            <p><span class="lang-vn">Thước phim từ dự án 11A2</span><span class="lang-en">Footage by 11A2 Project</span></p>
-        </div>
-        <div class="iframe-wrapper reveal">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0" title="Dray Nur Video Tour" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </section>
-
     <section id="team" style="background: rgba(255,255,255,0.02);">
         <div class="section-title reveal">
             <h2><span class="lang-vn">Đội Ngũ Dự Án</span><span class="lang-en">Our Team</span></h2>
@@ -416,7 +425,7 @@
     </section>
 
     <section id="map" class="map-section">
-        <div class="split-grid reveal">
+        <div class="split-grid reveal" style="grid-template-columns: 1fr;">
             <div class="loc-info">
                 <h3 style="font-size: 2.2rem; color: #fff; margin-bottom: 20px; line-height: 1.3;">
                     <span class="lang-vn">Đường Đến Huyền Thoại</span><span class="lang-en">Road To The Legend</span>
@@ -436,33 +445,23 @@
         <div class="project-panel reveal">
             <div class="proj-text">
                 <h3 style="font-size: 2.5rem; color: #fff; margin-bottom: 15px;">
-                    <span class="lang-vn">Chiến Dịch Bảo Tồn</span>
-                    <span class="lang-en">Conservation Action</span>
+                    <span class="lang-vn">Chiến Dịch Bảo Tồn</span><span class="lang-en">Conservation Action</span>
                 </h3>
                 <h4 style="color: var(--accent-cyan); font-weight: 600; text-transform: uppercase; margin-bottom: 25px; line-height: 1.4;">
                     <span class="lang-vn">Dự án môn Tiếng Anh - Lớp 11A2 THPT Hùng Vương</span>
                     <span class="lang-en">English Project - Class 11A2 Hung Vuong High</span>
                 </h4>
                 
-                <p class="lang-vn">Khi du lịch phát triển, Dray Nur đang đứng trước một ngã rẽ. Với chúng mình, bảo tồn thác nước không chỉ là giữ gìn nước và đá — mà còn là gìn giữ ký ức, văn hóa và ý nghĩa. Nếu chỉ xem nơi đây như điểm tham quan, ta sẽ đánh mất điều cốt lõi.</p>
-                <p class="lang-en">As tourism develops, Dray Nur stands at a crossroads. For us, preserving the waterfall is not just about keeping water and rock — it's about preserving memories, culture, and meaning. If we only see it as a tourist attraction, we lose its core.</p>
+                <p class="lang-vn">Khi du lịch phát triển, Dray Nur đang đứng trước một ngã rẽ. Với chúng mình, bảo tồn thác nước không chỉ là giữ gìn nước và đá — mà còn là gìn giữ ký ức, văn hóa và ý nghĩa.</p>
+                <p class="lang-en">As tourism develops, Dray Nur stands at a crossroads. For us, preserving the waterfall is not just about keeping water and rock — it's about preserving memories, culture, and meaning.</p>
                 
                 <p class="lang-vn" style="margin-top: 15px; color: #fff; font-weight: 600;">Tôn trọng nó như một câu chuyện sống. Hãy chung tay cùng Nhóm 1!</p>
                 <p class="lang-en" style="margin-top: 15px; color: #fff; font-weight: 600;">Respect it as a living story. Join hands with Group 1!</p>
 
                 <div class="green-guide">
-                    <div class="guide-item">
-                        <i class="fa-solid fa-shoe-prints" style="color: var(--accent-cyan);"></i> 
-                        <span class="lang-vn">Không xả rác</span><span class="lang-en">No littering</span>
-                    </div>
-                    <div class="guide-item">
-                        <i class="fa-solid fa-camera-retro" style="color: #d4af37;"></i> 
-                        <span class="lang-vn">Giữ cảnh quan</span><span class="lang-en">Keep it green</span>
-                    </div>
-                    <div class="guide-item">
-                        <i class="fa-solid fa-heart" style="color: #e74c3c;"></i> 
-                        <span class="lang-vn">Tôn trọng văn hóa</span><span class="lang-en">Respect culture</span>
-                    </div>
+                    <div class="guide-item"><i class="fa-solid fa-shoe-prints" style="color: var(--accent-cyan);"></i> <span class="lang-vn">Không xả rác</span><span class="lang-en">No littering</span></div>
+                    <div class="guide-item"><i class="fa-solid fa-camera-retro" style="color: #d4af37;"></i> <span class="lang-vn">Giữ cảnh quan</span><span class="lang-en">Keep it green</span></div>
+                    <div class="guide-item"><i class="fa-solid fa-heart" style="color: #e74c3c;"></i> <span class="lang-vn">Tôn trọng văn hóa</span><span class="lang-en">Respect culture</span></div>
                 </div>
             </div>
 
@@ -497,29 +496,23 @@
     </footer>
 
     <script>
-        // Đổi màu Navbar khi lướt
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 80) { nav.classList.add('scrolled'); } 
             else { nav.classList.remove('scrolled'); }
         });
 
-        // Toggle Mobile Menu
         const menuToggle = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
-
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             const icon = menuToggle.querySelector('i');
             if(navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
+                icon.classList.remove('fa-bars'); icon.classList.add('fa-xmark');
             } else {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars');
             }
         });
-
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -528,7 +521,6 @@
             });
         });
 
-        // Hiệu ứng Fade up
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -537,10 +529,9 @@
         }, { threshold: 0.1 });
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // SỬA LẠI: HIỆU ỨNG ZOOM ẢNH KHI LƯỚT NGANG TRÊN ĐIỆN THOẠI
+        // HIỆU ỨNG ZOOM ẢNH KHI LƯỚT NGANG TRÊN ĐIỆN THOẠI
         const photoItems = document.querySelectorAll('.photo-item');
         const photoGrid = document.querySelector('.photo-grid');
-
         if (photoItems.length > 0 && photoGrid) {
             const snapObserver = new IntersectionObserver((entries) => {
                 if (window.innerWidth <= 768) {
@@ -552,15 +543,10 @@
                         }
                     });
                 }
-            }, { 
-                root: photoGrid, // Bắt sự kiện cuộn chuẩn xác trong khung Gallery
-                threshold: 0.6 // Ảnh vào giữa khung 60% thì phóng to lên
-            });
-
+            }, { root: photoGrid, threshold: 0.6 });
             photoItems.forEach(item => snapObserver.observe(item));
         }
 
-        // Nút Tiếng Anh / Tiếng Việt
         function toggleLanguage() {
             document.body.classList.toggle('english-active');
             const btn = document.querySelector('.lang-btn');
